@@ -1,0 +1,33 @@
+#div2l{
+    float: left;
+    width: 180px;
+    padding: 10px;
+
+    border: solid;
+}
+#div2r{
+    float: right;
+    width: 80px;
+    padding:20px;
+    border: solid;
+}
+#div2c{
+
+    margin-right: 140px;
+    margin-left: 220px;
+    word-break: break-all;
+    border: solid;
+
+}
+#div1{
+    position: relative;
+    padding: 20px;
+    background-color: crimson ;
+    border: #999;
+    overflow: hidden;
+    border: solid;
+}
+#div3txt{
+    float: right;
+    margin-right: 10px;
+}
