@@ -1,0 +1,12 @@
+$().ready(function(){
+	$.ajax({
+		url:'../../AjaxAjaxServlet',
+		success:function(){//服务器端如果成功的响应，则执行该函数
+			alert("success");
+		},
+		error:function(){//如果服务器端出现异常，则执行该函数
+			alert("error");
+		},
+		type:'POST'
+	});
+});

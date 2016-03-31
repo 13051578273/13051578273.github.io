@@ -1,0 +1,5 @@
+用$.ajax请求一个Servlet,在servlet后台封装一个List<Person>,把List回调到前台，拼接table
+修改：
+   先根据id从servlet中查询到相应的数据，再把数据回显到页面上，再次进行修改
+   
+增加：把数据直接保存在list中

@@ -1,0 +1,305 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+		<script language="JavaScript" src="../js/jquery-1.4.2.js"></script>
+		<title>添加用户</title>
+	</head>
+	<script type="application/javascript">
+		/**
+		 * 对表格的动态的添加和删除   修改
+		 */
+		/**
+		 * 实现添加
+		 */
+		$().ready(function(){
+			var hh = 1;//每一行的行号，初始化为1
+			/**
+			 * 1、给提交按钮添加一个click事件
+			 */
+			$("#addUser").click(function(){
+				/**
+				 * 1、获取姓名,email,电话三个文本框的值
+				 * 2、拼接整个tr
+				 * 3、那拼接完成的tr追加到table中
+				 */
+				//先获取姓名,email,电话的值
+				var name = $("input[name=name]").val();
+				var email = $("input[name=email]").val();
+				var tel = $("input[name=tel]").val();
+				
+				//拼接tr
+				/**
+				 * <tr>
+						<td>Tom</td>
+						<td>tom@tom.com</td>
+						<td>5000</td>
+						<td><a href="deleteEmp?id=Tom">Delete</a></td>
+					</tr>
+				 */
+				var $tdName = $("<td></td>"); //创建一个td
+				$tdName.text(name); //<td>{name}</td>
+				//给td创建了一个属性为item,属性的值为name
+				$tdName.attr("item","name");
+				$tdName.css("cursor","pointer");
+				
+				/**
+				 * 给$tdName添加一个click时间
+				 */
+				$tdName.click(function(){
+					/**
+					 * 1、获取当前td的文本域的值
+					 * 2、把当前的td下的元素清空
+					 * 3、创建一个文本框
+					 * 4、把文本框追加到当前的td上
+					 * 5、给td里面的文本框赋值
+					 * 
+					 * 
+					 * 分析：
+					 *     当td中不含有文本框的时候，触发td的click事件，添加一个文本框,把td的文本内容赋值给
+					 *     文本框的内容
+					 *     
+					 *     如果td含有文本框了，那什么都不做
+					 */
+					if($(this).children("input").length==0){
+						var nameText = $(this).text();
+						$(this).empty();//清空td下面的子节点
+						var $textfield = $("<input/>");
+						$textfield.attr("type","text");
+						$textfield.attr("name","nameUpdate");
+						$(this).append($textfield);
+						/**
+						 * 先获取文本框的焦点，然后设置文本框的值
+						 */
+						$textfield.focus();	
+						$textfield.attr("value",nameText);
+						
+						/**
+						 * 当文本框失去焦点的时候触发该事件
+						 */
+						$textfield.blur(function(){
+							/**
+							 * 1、获取当前文本框的值
+							 * 2、删除掉当前的文本框
+							 * 3、该文本框的父节点追加一个文本内容
+							 */
+							//获取文本框的值
+							var textValue = $(this).val();
+							//获取文本框的父节点
+							//var $parent = $(this).parent();
+							//删除文本框本身
+							//$(this).remove();
+							//把文本框变成文本域
+							//$parent.text(textValue);
+							/**
+							 * 把原来的元素删除去，加上新的元素
+							 */
+							$(this).parent().html(textValue);
+						});
+					}
+					/**
+					 * 该方式相当于在td上添加了一个click事件，在文本框中也添加了一个click事件
+					 * 而文本框是td节点的子节点
+					 */
+//					var nameText = $(this).text();
+//					$(this).empty();//清空td下面的子节点
+//					var $textfield = $("<input/>");
+//					$textfield.attr("type","text");
+//					$textfield.attr("name","nameUpdate");
+//					$textfield.attr("value",nameText);
+//					$textfield.click(function(){
+//						alert("aaaaaa");
+//					});
+//					$(this).append($textfield);
+//					$textfield.focus();	
+				});
+				
+				
+				var $tdEmail = $("<td></td>");
+				$tdEmail.text(email); //<td>{email}</td>
+				$tdEmail.attr("item","email");
+				
+				var $tdTel = $("<td></td>");
+				$tdTel.text(tel);  //<td>{tel}</td>
+				$tdTel.attr("item","tel");
+				
+				
+				var $a = $("<a></a>");
+				$a.css("cursor","pointer");
+				$a.text("delete"); //<a>delete</a>
+				var $tdA = $("<td></td>");
+				//把该超级链接追加到$tdA上
+				$tdA.append($a); //<td><a>delete</a></td>
+				
+				/**
+				 * 给超级链接添加一个click事件
+				 */
+				$a.click(function(){
+					/**
+					 * 删除该超级链接所在的tr
+					 * $(this)代表当前的超级链接对象
+					 */
+					if(window.confirm("您确认要删除吗?")){
+						$(this).parent().parent().remove();	
+					}
+				});
+				
+				
+				/**
+				 * 拼接修改的超级链接
+				 */
+				var $aUpdate = $("<a></a>");
+				$aUpdate.text("修改");
+				$aUpdate.css("cursor","pointer");
+				var $tdUpdate = $("<td></td>");
+				$tdUpdate.append($aUpdate);
+				
+				/**
+				 * 给修改超级链接添加一个click事件
+				 */
+				$aUpdate.click(function(){
+					/**
+					 * 已经条件为该超级链接
+					 */
+					/**
+					 * 获取隐藏域的兄弟节点的值
+					 */
+					var id_value = $(this).parent().siblings("input").val();
+					//该超级链接的父节点的所有的td兄弟节点
+					$(this).parent().siblings("td").each(function(){
+						/**
+						 * this为当前正在遍历的td节点
+						 */
+						if($(this).children("a").length==0){//说明当前的td既不是delete操作也不是update操作
+							if($(this).attr("item")=="name"){//说明该td为name的td
+								$("#name_update").val($(this).text());
+							}
+							
+							if($(this).attr("item")=="email"){//说明该td为name的td
+								$("#email_update").val($(this).text());
+							}
+							
+							if($(this).attr("item")=="tel"){//说明该td为name的td
+								$("#tel_update").val($(this).text());
+							}
+							
+							$("#id_update").val(id_value);
+						}
+					});
+					
+					
+				});
+				
+				/**
+				 * 添加一个隐藏域，该隐藏域隐藏行号
+				 */
+				var $hidden = $("<input/>");
+				$hidden.attr("type","hidden");
+				$hidden.attr("name","id");
+				$hidden.attr("value",hh);
+				
+				/**
+				 * <tr>
+						<td>Tom</td>
+						<td>tom@tom.com</td>
+						<td>5000</td>
+						<td><a href="deleteEmp?id=Tom">Delete</a></td>
+					</tr>
+				 */
+				var $tr = $("<tr></tr>");
+				$tr.append($tdName);
+				$tr.append($tdEmail);
+				$tr.append($tdTel);
+				$tr.append($tdA);
+				$tr.append($tdUpdate);
+				$tr.append($hidden);
+				
+				$("#usertable tbody").append($tr);
+				
+				//给行号加1
+				hh++;
+			});
+			
+			
+			/**
+			 * 添加修改事件
+			 */
+			$("#updateUser").click(function(){
+				/**
+				 * 获取到被修改的行的行号
+				 */
+				var hh_id = $("#id_update").val();
+				/**
+				 * 查找table下面所有的隐藏域，遍历所有的隐藏域，查看隐藏域的值是否为hh_id
+				 * 如果隐藏域的值为hh_id,该隐藏域所在的tr就是要修改的那行
+				 */
+				//table下面所有的隐藏域
+				$("table input[type='hidden']").each(function(){
+					if($(this).val()==hh_id){//该隐藏域所在的行就是要修改的行
+						$(this).siblings("td").each(function(){//遍历隐藏域的所有的td的兄弟节点 
+							if($(this).attr("item")=="name"){
+								$(this).text($("#name_update").val());
+							}
+							if($(this).attr("item")=="email"){
+								$(this).text($("#email_update").val());
+							}
+							if($(this).attr("item")=="tel"){
+								$(this).text($("#tel_update").val());
+							}
+						});
+					}
+				});
+			});
+		});
+		
+	</script>
+	<body>
+		<center>
+			<br><br>
+			添加用户:<br><br>
+			姓名: <input type="text" name="name" id="name" />&nbsp;&nbsp;
+			email: <input type="text" name="email" id="email" />&nbsp;&nbsp;
+			电话: <input type="text" name="tel" id="tel" /><br><br>
+			<button id="addUser">提交</button>
+			<br><br>
+			<hr>
+			<br><br>
+			<table id="usertable" border="1" cellpadding="5" cellspacing=0>
+				<tbody>
+					<tr>
+						<th>姓名</th>
+						<th>email</th>
+						<th>电话</th>
+						<th>删除</th>
+						<th>修改</th>
+					</tr>
+					<tr>
+						<td>Tom</td>
+						<td>tom@tom.com</td>
+						<td>5000</td>
+						<td><a href="deleteEmp?id=Tom">Delete</a></td>
+						<td><a href="deleteEmp?id=Tom">update</a></td>
+					</tr>
+					<tr>
+						<td>Jerry</td>
+						<td>jerry@sohu.com</td>
+						<td>8000</td>
+						<td><a href="deleteEmp?id=Jerry">Delete</a></td>
+						<td><a href="deleteEmp?id=Tom">update</a></td>
+					</tr>
+				</tbody>
+			</table>
+			<br>
+			<br>
+			<br>
+			<hr>
+			修改用户:<br><br>
+			姓名: <input type="text" name="name" id="name_update" />&nbsp;&nbsp;
+			email: <input type="text" name="email" id="email_update" />&nbsp;&nbsp;
+			电话: <input type="text" name="tel" id="tel_update" /><br><br>
+			<input type="hidden" id="id_update"/>
+			<button id="updateUser">提交</button>
+		</center>
+	</body>
+</html>
+

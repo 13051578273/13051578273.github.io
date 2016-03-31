@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>tabe.html</title>
+	
+    <meta name="keywords" content="keyword1,keyword2,keyword3">
+    <meta name="description" content="this is my page">
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+	<script src="../../js/jquery-1.4.2.js"></script>
+  </head>
+  <script type="text/javascript">
+  		window.onload = function(){
+			//$("table tr td:first").css("background","red");
+			/**
+			 * each函数为遍历jquery数组中的所有的对象
+			 *    $("tr")是jquery对象
+			 */
+			$("tr").each(function(){
+				//this表示正在遍历的元素
+				//children方法中参数是选择器
+				$(this).children("td:first").css("background","red");
+			});
+		}
+  </script>
+  <body>
+    This is my HTML page. <br>
+		<table>
+			<tr>
+				<td>afds</td>
+				<td>asdf</td>
+			</tr>
+			<tr>
+				<td>asdf</td>
+				<td>afds</td>
+			</tr>
+			<tr>
+				<td>afds</td>
+				<td>asfd</td>
+			</tr>
+			<tr>
+				<td>asfd</td>
+				<td>afds</td>
+			</tr>
+		</table>
+  </body>
+</html>
